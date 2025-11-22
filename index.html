@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitterzon Family</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-light: #fef9f4;
+            --primary-dark: #1a1a1a;
+            --accent: #e6b89c;
+            --accent-dark: #d4a37c;
+            --secondary: #9db5b2;
+            --text-light: #5a4c3d;
+            --text-dark: #e6e6e6;
+            --card-light: #ffffff;
+            --card-dark: #2a2a2a;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--primary-light);
+            color: var(--text-light);
+            transition: var(--transition);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        body.dark {
+            background: var(--primary-dark);
+            color: var(--text-dark);
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: white;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            font-size: 1rem;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        .dark-toggle {
+            cursor: pointer;
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            color: white;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dark-toggle:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), 
+                        url('Keluarga.jpg') center/cover no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+        
+        .header-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+        }
+        
+        .header-content p {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: var(--transition);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        /* Sections */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 50px;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            color: var(--text-light);
+        }
+        
+        body.dark h2 {
+            color: var(--text-dark);
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-top: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .about-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(230,184,156,0.2), rgba(157,181,178,0.2));
+            z-index: 1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .about-image:hover:before {
+            opacity: 1;
+        }
+        
+        .about-image:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Family Grid */
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: var(--card-light);
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card:hover:before {
+            transform: scaleX(1);
+        }
+        
+        body.dark .card {
+            background: var(--card-dark);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .card:hover i {
+            transform: scale(1.2);
+            color: var(--secondary);
+        }
+        
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .card p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        body.dark .card p {
+            color: var(--text-dark);
+        }
+        
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            aspect-ratio: 1/1;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 25px;
+            color: white;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent), var(--secondary));
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+            animation: fadeIn 1s ease;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-content {
+            padding: 25px;
+            background: var(--card-light);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        body.dark .timeline-content {
+            background: var(--card-dark);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content:after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 30px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid var(--card-light);
+        }
+        
+        body.dark .timeline-item:nth-child(odd) .timeline-content:after {
+            border-left: 10px solid var(--card-dark);
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 30px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid var(--card-light);
+        }
+        
+        body.dark .timeline-item:nth-child(even) .timeline-content:after {
+            border-right: 10px solid var(--card-dark);
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            top: 30px;
+            z-index: 1;
+            border: 4px solid var(--primary-light);
+            box-shadow: 0 0 0 4px var(--accent);
+        }
+        
+        body.dark .timeline-item:before {
+            border: 4px solid var(--primary-dark);
+        }
+        
+        .timeline-item:nth-child(odd):before {
+            right: -12px;
+        }
+        
+        .timeline-item:nth-child(even):before {
+            left: -12px;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,192C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        
+        .footer-quote {
+            font-style: italic;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.6rem;
+            transition: var(--transition);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease;
+        }
+        
+        /* Leaf Effect */
+        .leaf {
+            position: fixed;
+            top: -50px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.7;
+            font-size: 24px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .timeline:before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 20px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:before {
+                left: 20px;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content:after,
+            .timeline-item:nth-child(even) .timeline-content:after {
+                left: -10px;
+                border-right: 10px solid var(--card-light);
+                border-left: none;
+            }
+            
+            body.dark .timeline-item:nth-child(odd) .timeline-content:after,
+            body.dark .timeline-item:nth-child(even) .timeline-content:after {
+                border-right: 10px solid var(--card-dark);
+            }
+            
+            nav {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav a {
+                margin: 5px 10px;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Musik Background -->
+    <audio autoplay loop hidden>
+        <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Kevin_MacLeod/Calming/Kevin_MacLeod_-_At_Rest.mp3" type="audio/mp3">
+    </audio>
+
+    <nav>
+        <div class="logo">Fitterzon Family</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#tentang">Tentang</a>
+            <a href="#profil">Profil</a>
+            <a href="#galeri">Galeri</a>
+            <a href="#kenangan">Kenangan</a>
+        </div>
+        <button class="dark-toggle" onclick="toggleDarkMode()">
+            <i class="fas fa-moon"></i> Mode Gelap
+        </button>
+    </nav>
+
+    <header id="home">
+        <div class="header-content">
+            <h1 class="floating">Fitterzon Family</h1>
+            <p>Where love grows and memories live forever.</p>
+            <a href="#tentang" class="btn">Jelajahi Keluarga Kami</a>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down" style="font-size:1.5rem;"></i>
+        </div>
+    </header>
+
+    <section id="tentang">
+        <h2>Tentang Keluarga Kami</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Fitterzon Family adalah keluarga yang tumbuh dengan kehangatan, kebersamaan, dan penuh cerita indah. Website ini dibuat sebagai ruang untuk menyimpan kenangan, foto, dan kisah kami.</p>
+                <p>Kami percaya bahwa keluarga adalah tempat pertama di mana kita belajar tentang cinta, kepercayaan, dan dukungan. Setiap momen bersama adalah harta berharga yang kami jaga dengan penuh kasih sayang.</p>
+                <p>Dengan semangat kebersamaan, kami terus menciptakan kenangan indah yang akan menjadi warisan berharga untuk generasi mendatang.</p>
+            </div>
+            <div class="about-image">
+                <img src="Judul.jpg" alt="Keluarga Fitterzon">
+            </div>
+        </div>
+    </section>
+
+    <section id="profil">
+        <h2>Profil Anggota Keluarga</h2>
+        <div class="family-grid">
+            <div class="card">
+                <i class="fas fa-user-tie"></i>
+                <h3>Alex Fitterzon</h3>
+                <p>Ayah yang bijaksana dan penyayang. Selalu memberikan yang terbaik untuk keluarga.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-user-female"></i>
+                <h3>Elly Susanti</h3>
+                <p>Ibu yang penuh kasih sayang. Jiwa keluarga yang selalu menghangatkan suasana.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-user-graduate"></i>
+                <h3>M. Nabil Fitterzon</h3>
+                <p>Anak pertama yang kreatif dan bertanggung jawab. Selalu punya ide-ide brilian.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-running"></i>
+                <h3>Fathir Ataya</h3>
+                <p>Anak kedua yang aktif dan penuh semangat. Suka olahraga dan petualangan.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-smile"></i>
+                <h3>Adinda Syaqira</h3>
+                <p>Anak ketiga yang manis dan ceria. Pelipur lara di tengah keluarga.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeri">
+        <h2>Galeri Foto</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="Keluarga 3.jpg" alt="Momen Keluarga 1">
+                <div class="gallery-overlay">
+                    <h3>Liburan</h3>
+                    <p>Momen indah saat liburan keluarga</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="Keluarga.jpg" alt="Momen Keluarga 2">
+                <div class="gallery-overlay">
+                    <h3>Foto Lebaran</h3>
+                    <p>Berkumpul dalam acara spesial</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="Keluarga 2.jpg" alt="Momen Keluarga 3">
+                <div class="gallery-overlay">
+                    <h3>Momen Santai</h3>
+                    <p>Bersantai berdua bersama</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kenangan">
+        <h2>Linimasa Kenangan</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2006 - M.Nabil Fitterzon</h3>
+                    <p>Anak Pertama Lahir.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2011 - Kelahiran Fathir Ataya</h3>
+                    <p>Kelahiran anggota keluarga Kedua, Yang Aktif dan Suka Makan.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2020 - Pindah Rumah</h3>
+                    <p>Memulai babak baru di rumah yang lebih luas. Tempat baru untuk menciptakan lebih banyak kenangan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Fitterzon Family</div>
+            <p class="footer-quote">"Family is not an important thing. It's everything." - Michael J. Fox</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="copyright">
+                © 2025 Fitterzon Family — Family is the beginning of every story.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            const button = document.querySelector('.dark-toggle');
+            if (document.body.classList.contains('dark')) {
+                button.innerHTML = '<i class="fas fa-sun"></i> Mode Terang';
+            } else {
+                button.innerHTML = '<i class="fas fa-moon"></i> Mode Gelap';
+            }
+        }
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Fade in elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('section, .card, .gallery-item, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Leaf falling effect
+        function createLeaf() {
+            const leaf = document.createElement('div');
+            leaf.classList.add('leaf');
+            leaf.innerHTML = '🍂';
+            
+            // Random position
+            const startPosition = Math.random() * window.innerWidth;
+            leaf.style.left = `${startPosition}px`;
+            
+            // Random size
+            const size = Math.random() * 20 + 15;
+            leaf.style.fontSize = `${size}px`;
+            
+            // Random rotation
+            const rotation = Math.random() * 360;
+            leaf.style.transform = `rotate(${rotation}deg)`;
+            
+            // Random animation duration
+            const duration = Math.random() * 10 + 10;
+            
+            // Add to body
+            document.body.appendChild(leaf);
+            
+            // Animate leaf
+            const animation = leaf.animate([
+                { transform: `translateY(0) rotate(${rotation}deg)`, opacity: 0.8 },
+                { transform: `translateY(${window.innerHeight}px) rotate(${rotation + 180}deg)`, opacity: 0 }
+            ], {
+                duration: duration * 1000,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            });
+            
+            // Remove leaf after animation completes
+            animation.onfinish = () => {
+                leaf.remove();
+            };
+        }
+        
+        // Create leaves periodically
+        function startLeafFall() {
+            setInterval(createLeaf, 800);
+        }
+        
+        // Start leaf fall when page loads
+        window.addEventListener('load', startLeafFall);
+        
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(0,0,0,0.95)';
+                nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.2)';
+            } else {
+                nav.style.background = 'rgba(0,0,0,0.85)';
+                nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
+<audio id="bgMusic" autoplay loop>
+    <source src="Rumah.mp3" type="audio/mp3">
+</audio>
